@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestDbExample.Views.PostPage"
+             xmlns:converters="clr-namespace:RestDbExample.Views.Converters;assembly=RestDbExample"
+             Title="{Binding Post.Name}">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converters:CommentToPadding x:Key="CommentToPadding"/>
+      <converters:BooleanInverter x:Key="BooleanInverter"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <StackLayout
+    Orientation="Vertical">
+        <StackLayout
+          Padding="10, 5, 5, 10">
+            <Label
+      TextColor="White"
+      Text="{Binding Post.Description}"
+      FontSize="Small"/>
+        </StackLayout>
+    <BoxView
+      Color="Red"
+      HeightRequest="1"/>
+        <StackLayout
+          Padding="10,5,5,10">
+            <Label
+      Text="Comments"
+      TextColor="Red"
+      FontSize="Small"/>
+        </StackLayout>
+        <Grid>
+            <Label
+          HorizontalOptions="CenterAndExpand"
+        IsVisible="{Binding IsBusy}"
+        Text="Loading..."/>
+            <Label
+          HorizontalOptions="CenterAndExpand"
+        IsVisible="{Binding IsBusy, Converter={StaticResource BooleanInverter}}"
+        Text="No comments found."/>
+      <ListView
+        x:Name="Comments"
+        IsVisible="{Binding HasComments}"
+        BackgroundColor="White"
+        HorizontalOptions="FillAndExpand"
+        ItemsSource="{Binding CommentsFormatted}"
+        HasUnevenRows="True"
+        SeparatorVisibility="Default"
+        SeparatorColor="Gray">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout
+                Padding="{Binding Tabs, Converter={StaticResource CommentToPadding}}">
+                <Label
+                  TextColor="Black"
+                  Text="{Binding FormattedText}"/>
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </Grid>
+    <BoxView
+      Color="Red"
+      HeightRequest="1"/>
+        <StackLayout
+          Padding="10,5,5,10">
+            <Label
+      Text="Voters"
+      TextColor="Red"
+      FontSize="Small"/>
+        </StackLayout>
+    <Grid
+      VerticalOptions="FillAndExpand">
+            <Label
+          HorizontalOptions="CenterAndExpand"
+        IsVisible="{Binding IsBusy}"
+        Text="Loading..."/>
+            <Label
+          HorizontalOptions="CenterAndExpand"
+        IsVisible="{Binding IsBusy, Converter={StaticResource BooleanInverter}}"
+        Text="Voters"/>
+      <ListView
+       x:Name="Voters"
+       IsVisible="{Binding HasVoters}"
+       BackgroundColor="White"
+       HorizontalOptions="FillAndExpand"
+       VerticalOptions="FillAndExpand"
+       ItemsSource="{Binding Voters}"
+       HasUnevenRows="True"
+       SeparatorVisibility="Default"
+       SeparatorColor="Gray">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <TextCell
+              TextColor="Black"
+              Text="{Binding Name}"/>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </Grid>
+  </StackLayout>
+</ContentPage>

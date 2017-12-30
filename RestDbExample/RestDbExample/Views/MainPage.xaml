@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RestDbExample.Views.MainPage"
+             xmlns:converters="clr-namespace:RestDbExample.Views.Converters;assembly=RestDbExample"
+             IsBusy="{Binding IsBusy}">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converters:BooleanInverter x:Key="BooleanInverter"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+        <StackLayout
+            Padding="10,0,0,10"
+          Grid.Row="0"
+            Orientation="Horizontal">
+            <Label
+                VerticalOptions="CenterAndExpand"
+                Text="Order by:"/>
+        </StackLayout>
+        <StackLayout
+            Padding="10,0,0,10"
+          Grid.Row="1"
+          Orientation="Horizontal">
+            <Button
+                VerticalOptions="CenterAndExpand"
+        Text="Title"
+        Command="{Binding OrderByTitle}"/>
+            <Button
+                VerticalOptions="CenterAndExpand"
+        Text="Votes"
+        Command="{Binding OrderByVotes}"/>
+            <Button
+                VerticalOptions="CenterAndExpand"
+        Text="User"
+        Command="{Binding OrderByUser}"/>
+        </StackLayout>
+    <StackLayout
+      Orientation="Horizontal"
+      Grid.Row="2"
+            Padding="10,0,0,10">
+            <Label
+                VerticalOptions="CenterAndExpand"
+          Text="Choose date:"/>
+    </StackLayout>
+        <StackLayout
+          Orientation="Horizontal"
+          Grid.Row="3"
+            Padding="10,0,0,10">
+            <DatePicker
+                VerticalOptions="CenterAndExpand"
+        MaximumDate="{Binding MaximumDateAllowed}"
+        Date="{Binding FilterByDate, Mode=TwoWay}"/>
+        </StackLayout>
+    <Grid
+       Grid.Row="4">
+      <Label
+          HorizontalOptions="CenterAndExpand"
+          VerticalOptions="CenterAndExpand"
+        TextColor="White"
+        Text="Loading..."/>
+      <ListView
+       x:Name="Posts"
+       BackgroundColor="White"
+       IsVisible="{Binding IsBusy, Converter={StaticResource BooleanInverter}}"
+       ItemSelected="OnItemSelected"
+       HorizontalOptions="FillAndExpand"
+       VerticalOptions="FillAndExpand"
+       SelectedItem="{Binding GoToPostDetails}"
+       ItemsSource="{Binding Posts}"
+       HasUnevenRows="True"
+       SeparatorVisibility="Default"
+       SeparatorColor="Gray">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout
+                Padding="10"
+                HorizontalOptions="Start"
+                VerticalOptions="Start"
+                Orientation="Horizontal">
+                <Image Aspect="AspectFit" HeightRequest="50" WidthRequest="50" Source="{Binding User.ImageSource}" />
+                <StackLayout
+                  Orientation="Vertical">
+                  <Label
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    Text="{Binding Name}"/>
+                  <Label
+                    TextColor="Black"
+                    Text="{Binding Description}"
+                    LineBreakMode="TailTruncation"/>
+                  <Label
+                    TextColor="Gray"
+                    Text="{Binding VoteCountUi}"/>
+                  <Label
+                    TextColor="Gray"
+                    Text="{Binding ByUserName}"/>
+                </StackLayout>
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </Grid>
+  </Grid>
+</ContentPage>
